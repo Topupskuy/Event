@@ -3,19 +3,25 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Giveaway Spinner — Sekali Saja + Registrasi</title>
+<title>Giveaway Spinner — Sekali Saja + Registrasi + Claim WA</title>
 <style>
 :root{
-  --blue:#2e7dff; --green:#16a34a; --border:#e5e7eb; --text:#111; --muted:#6b7280; --bg:#fff;
+  --blue:#2e7dff; --green:#16a34a; --border:#e5e7eb; --text:#111; --muted:#6b7280; --bg:rgba(255,255,255,.88);
   --radius:14px; --shadow:0 6px 20px rgba(0,0,0,.08);
   --maxw:900px;
 }
 *{box-sizing:border-box}
-body{margin:0;background:#f9fafb;color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+html,body{height:100%}
+body{
+  margin:0;color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+  background: linear-gradient(180deg,#f3f4f6,#e5e7eb); /* fallback */
+  background-attachment: fixed;
+  background-size: cover;
+}
 
-/* Shell */
+/* Glassy wrapper */
 .wrap{max-width:var(--maxw);margin:24px auto;padding:16px}
-.card{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px}
+.card{background:var(--bg);backdrop-filter: blur(6px);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px}
 .topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:10px}
 .title{font-weight:800;font-size:20px}
 .status{font-size:13px;color:var(--muted)}
@@ -25,13 +31,14 @@ body{margin:0;background:#f9fafb;color:var(--text);font-family:system-ui,-apple-
 .ad img{max-width:100%;height:auto;border-radius:10px;border:1px solid var(--border)}
 
 /* Board */
-.board{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:12px 0}
+.board{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:12px 0}
 .slot{
   padding:16px;border:1px solid var(--border);border-radius:12px;background:#fff;text-align:center;
-  font-weight:800;font-size:15px;user-select:none;transition:transform .08s ease, background .08s ease, box-shadow .08s ease, color .08s ease;
+  font-weight:800;font-size:18px;user-select:none;transition:transform .08s ease, background .08s ease, box-shadow .08s ease, color .08s ease;
 }
+.slot small{display:block;font-weight:600;color:#6b7280;font-size:12px;margin-top:4px}
 .slot.active{background:var(--blue);color:#fff;transform:scale(1.05);box-shadow:0 6px 16px rgba(46,125,255,.25)}
-.slot.winner{background:#16a34a;color:#fff;transform:scale(1.08);box-shadow:0 8px 22px rgba(22,163,74,.28)}
+.slot.winner{background:var(--green);color:#fff;transform:scale(1.08);box-shadow:0 8px 22px rgba(22,163,74,.28)}
 
 /* Start Button */
 .actions{display:flex;align-items:center;justify-content:center;margin:10px 0}
@@ -48,12 +55,12 @@ body{margin:0;background:#f9fafb;color:var(--text);font-family:system-ui,-apple-
   display:none;align-items:center;justify-content:center;z-index:2000;padding:16px
 }
 #claimBox{
-  width:min(92vw,460px);background:#fff;border:1px solid var(--border);
+  width:min(92vw,520px);background:#fff;border:1px solid var(--border);
   border-radius:16px;box-shadow:var(--shadow);overflow:hidden
 }
 .claim-body{padding:16px}
 .claim-title{font-weight:900;font-size:18px;margin-bottom:6px}
-.claim-text{font-size:14px;color:#374151;margin-bottom:14px}
+.claim-text{font-size:14px;color:#374151;margin-bottom:14px;white-space:pre-line}
 .claim-actions{display:flex;gap:10px;flex-wrap:wrap}
 .claim-actions .btn-claim{
   padding:10px 14px;border-radius:10px;border:2px solid #16a34a;background:#16a34a;color:#fff;font-weight:800;cursor:pointer
@@ -90,10 +97,23 @@ body{margin:0;background:#f9fafb;color:var(--text);font-family:system-ui,-apple-
 /* shake animation on error */
 @keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
 .shake{animation:shake .35s linear}
+
+/* Audio badge (optional) */
+#audioBadge{
+  position:fixed;right:12px;bottom:12px;z-index:10;
+  padding:8px 12px;border:0;border-radius:999px;background:rgba(0,0,0,.65);color:#fff;font:600 13px/1.2 system-ui;cursor:pointer;display:none
+}
 </style>
 </head>
 <body>
-<!-- Popup Registrasi (muncul saat halaman dibuka, sampai kode benar) -->
+
+<!-- Musik: nyala di klik pertama -->
+<audio id="bgm" preload="auto" playsinline>
+  <source src="https://files.impuremusic.com/audio/2025/07/Yung_Kai_-_Blue(impuremusic.com).mp3" type="audio/mpeg">
+</audio>
+<button id="audioBadge" type="button">♪ Musik menyala</button>
+
+<!-- Popup Registrasi -->
 <div id="regOverlay" role="dialog" aria-modal="true" aria-label="Registrasi Giveaway">
   <div id="regBox">
     <div class="reg-body">
@@ -124,22 +144,22 @@ body{margin:0;background:#f9fafb;color:var(--text);font-family:system-ui,-apple-
 
     <!-- Banner Atas -->
     <div class="ad">
-      <img src="https://hisoka.net/file/IMG-20250910-WA0124.jpg" alt="Banner Atas">
+      <img src="https://via.placeholder.com/728x90.png?text=Banner+Atas" alt="Banner Atas">
     </div>
 
     <!-- Papan Spinner -->
     <div id="gwBoard" class="board"></div>
 
     <div class="actions">
-      <button id="gwStart" class="btn"> - START - </button>
+      <button id="gwStart" class="btn">START</button>
     </div>
 
     <!-- Banner Bawah -->
     <div class="ad">
-      <img src="https://hisoka.net/file/IMG-20250910-WA01211.jpg" alt="Banner Bawah">
+      <img src="https://via.placeholder.com/728x90.png?text=Banner+Bawah" alt="Banner Bawah">
     </div>
 
-    <div class="note">* Sistem diatur satu kali saja (best-effort). Hasil akan terkunci.</div>
+    <div class="note">* Sistem diatur satu kali saja per perangkat (best-effort). Hasil akan terkunci.</div>
   </div>
 </div>
 
@@ -148,10 +168,10 @@ body{margin:0;background:#f9fafb;color:var(--text);font-family:system-ui,-apple-
   <div id="claimBox">
     <div class="claim-body">
       <div class="claim-title">🎉 Selamat!</div>
-      <div id="claimText" class="claim-text">Kamu mendapatkan <b>Premium (X)</b>.<br>Klik <b>Claim</b> untuk menerimanya.</div>
+      <div id="claimText" class="claim-text"></div>
       <div class="claim-actions">
         <button id="btnClaim" class="btn-claim">Claim</button>
-        
+        <button id="btnCloseClaim" class="btn-close">Tutup</button>
       </div>
     </div>
   </div>
@@ -160,33 +180,49 @@ body{margin:0;background:#f9fafb;color:var(--text);font-family:system-ui,-apple-
 <script>
 (function(){
   /* ===================== KONFIG ===================== */
-  // Kode registrasi dapat diubah di sini:
+  // Background (URL kamu; sudah di-encode spasi). Pastikan URL ini lengkap & valid.
+  const BG_URL = "https://raw.githubusercontent.com/Topupskuy/Topupskuy.github.io/refs/heads/main/Coklat%20Aesthetic%20Photo%20Collage%20Instagram%20Story_20241123_052643_0000.png";
+
+  // Kode registrasi
   const REG_CODE = '0925';
-  // Simpan status registrasi agar tidak ditanya lagi di perangkat yang sama
   const REG_KEY  = 'gw_reg_ok_v1';
 
-  // Giveaway options & peluang
+  // Mapping label untuk 8 tombol spinner (A–H)
+  const LABELS = { A:'CANVA', B:'VIDIO', C:'VIU', D:'DUOLINGO', E:'NETFLIX', F:'YOUTUBE', G:'CAPCUT', H:'CHATGPT' };
+
+  // Daftar 12 tombol (untuk nomor urut)
+  const ALL_LIST = ['CANVA','VIDIO','VIU','DUOLINGO','NETFLIX','YOUTUBE','CAPCUT','CHATGPT','SPOTIFY','A.MUSIC','ZOOM','GEMINI'];
+
+  // Giveaway options & peluang (A–H)
   const OPTIONS = [
-    {key:'CANVA', pct:40},
-    {key: 'VIDIO', pct: 0},
-    {key:'VIU', pct:30},
-    {key:'DUOLINGO', pct:11},
-    {key: 'NETFLIX', pct: 0},
-    {key:'YOUTUBE', pct:5},
-    {key:'CAPCUT', pct:2},
-    {key: 'CHATGPT', pct: 0},
-    {key:'SPOTIFY', pct:1},
-    {key:'A.MUSIC', pct:5},
-    {key:'ZOOM', pct:6},
-    {key: 'GEMINI', pct: 0},
+    {key:'A', pct:30},
+    {key:'B', pct:40},
+    {key:'C', pct:10},
+    {key:'D', pct:5},
+    {key:'E', pct:2},
+    {key:'F', pct:2},
+    {key:'G', pct:5},
+    {key:'H', pct:6},
   ]; // total 100
-  const SPIN_DURATION_MS = 11000; // ~10 detik
+  const PCT_MAP = Object.fromEntries(OPTIONS.map(o=>[o.key, o.pct]));
+  const SPIN_DURATION_MS = 10000; // ~10 detik
+
+  // One-time lock
   const STORAGE_KEY = 'gw_one_time_flag_v1';
   const STORAGE_VAL = 'played';
   const RESULT_KEY  = 'gw_result_v1';
 
-  // Nomor WhatsApp untuk Claim & Hubungi Admin (format internasional)
-  const WA_NUMBER_E164 = '6283847540571'; // dari 083847540571
+  // WhatsApp
+  const WA_NUMBER_E164 = '6283847540571';
+
+  /* ===================== BACKGROUND LOADER ===================== */
+  (function loadBg(){
+    if(!BG_URL) return;
+    const img = new Image();
+    img.onload = ()=>{ document.body.style.backgroundImage = `url('${BG_URL}')`; };
+    img.onerror = ()=>{ /* tetap pakai fallback gradient */ };
+    img.src = BG_URL;
+  })();
 
   /* ===================== ELEMEN DOM ===================== */
   // Registrasi
@@ -208,12 +244,37 @@ body{margin:0;background:#f9fafb;color:var(--text);font-family:system-ui,-apple-
   const btnClaim     = document.getElementById('btnClaim');
   const btnCloseClaim= document.getElementById('btnCloseClaim');
 
+  // Musik
+  const bgm        = document.getElementById('bgm');
+  const audioBadge = document.getElementById('audioBadge');
+  let audioStarted = false;
+
+  /* ===================== MUSIC ON FIRST INTERACTION ===================== */
+  function startMusicOnce(){
+    if(audioStarted) return;
+    audioStarted = true;
+    try{ bgm.muted = false; bgm.loop = true; }catch(e){}
+    bgm.play().then(()=>{
+      audioBadge.textContent = '♪ Musik menyala';
+      audioBadge.style.display = 'inline-block';
+      setTimeout(()=>{ audioBadge.style.display='none'; }, 3000);
+    }).catch(()=>{/* ignore */});
+    // lepas listener
+    document.removeEventListener('click', startMusicOnce, true);
+    window.removeEventListener('pointerdown', startMusicOnce, {passive:true});
+    window.removeEventListener('keydown', startMusicOnce);
+  }
+  // tangkap berbagai gesture
+  document.addEventListener('click', startMusicOnce, true);
+  window.addEventListener('pointerdown', startMusicOnce, {passive:true, once:true});
+  window.addEventListener('keydown', startMusicOnce, {once:true});
+
   /* ===================== RENDER BOARD ===================== */
   OPTIONS.forEach(opt=>{
     const el = document.createElement('div');
     el.className = 'slot';
     el.dataset.key = opt.key;
-    el.textContent = opt.key;
+    el.innerHTML = opt.key + '<small>'+ (LABELS[opt.key]||'') +'</small>';
     board.appendChild(el);
   });
   const slots = Array.from(board.querySelectorAll('.slot'));
@@ -316,15 +377,11 @@ body{margin:0;background:#f9fafb;color:var(--text);font-family:system-ui,-apple-
   }
 
   /* ===================== Registrasi ===================== */
-  // WA "hubungi admin"
   function waAdminLink(){
     const msg = "Halo kak, saya ingin mendapatkan kode registrasi Giveaway. Boleh kah saya ikut event bulan ini?\nTerima kasih kak";
-    const url = 'https://api.whatsapp.com/send?phone=' + WA_NUMBER_E164 + '&text=' + encodeURIComponent(msg);
-    return url;
+    return 'https://api.whatsapp.com/send?phone=' + WA_NUMBER_E164 + '&text=' + encodeURIComponent(msg);
   }
-  regContact.addEventListener('click', ()=>{
-    window.open(waAdminLink(), '_blank', 'noopener');
-  });
+  regContact.addEventListener('click', ()=>{ window.open(waAdminLink(), '_blank', 'noopener'); });
 
   function setRegOK(){
     try{ localStorage.setItem(REG_KEY, 'ok'); }catch(e){}
@@ -340,27 +397,19 @@ body{margin:0;background:#f9fafb;color:var(--text);font-family:system-ui,-apple-
     try{ if(getCookie(REG_KEY)==='ok') return true; }catch(e){}
     return false;
   }
-
   function verifyReg(){
     const v = (regInput.value||'').trim();
-    if(v===REG_CODE){
-      setRegOK();
-    }else{
+    if(v===REG_CODE){ setRegOK(); }
+    else{
       regError.textContent = 'Kode salah. Silakan periksa kembali.';
       const box = document.getElementById('regBox');
-      box.classList.remove('shake'); // reset anim
-      void box.offsetWidth;          // reflow for restart
-      box.classList.add('shake');
-      regInput.focus();
-      regInput.select?.();
+      box.classList.remove('shake'); void box.offsetWidth; box.classList.add('shake');
+      regInput.focus(); regInput.select?.();
     }
   }
   regVerify.addEventListener('click', verifyReg);
-  regInput.addEventListener('keydown', (e)=>{
-    if(e.key==='Enter'){ verifyReg(); }
-  });
+  regInput.addEventListener('keydown', (e)=>{ if(e.key==='Enter'){ verifyReg(); } });
 
-  // Jika sudah registrasi sebelumnya → sembunyikan overlay
   if(isRegOK()){
     regOverlay.style.display = 'none';
     mainCard.removeAttribute('aria-hidden');
@@ -368,6 +417,38 @@ body{margin:0;background:#f9fafb;color:var(--text);font-family:system-ui,-apple-
     regOverlay.style.display = 'flex';
     mainCard.setAttribute('aria-hidden','true');
     setTimeout(()=>{ regInput.focus(); }, 50);
+  }
+
+  /* ===================== Formatting util ===================== */
+  function formatNowJakarta(){
+    try{
+      const now = new Date();
+      const d = new Intl.DateTimeFormat('id-ID', { timeZone:'Asia/Jakarta', day:'2-digit', month:'long', year:'numeric'}).format(now);
+      const t = new Intl.DateTimeFormat('id-ID', { timeZone:'Asia/Jakarta', hour:'2-digit', minute:'2-digit', second:'2-digit', hour12:false }).format(now);
+      const tDots = t.replaceAll(':','.');
+      return `${d} pukul ${tDots} WIB`;
+    }catch{
+      const s = new Date().toLocaleString('id-ID');
+      return `${s} WIB`;
+    }
+  }
+
+  /* ===================== Pesan WA sesuai format baru ===================== */
+  function buildWaMessage(winnerKey){
+    const label = LABELS[winnerKey] || winnerKey;
+    const pct   = PCT_MAP[winnerKey] ?? '?';
+    const idx   = ALL_LIST.indexOf(label) + 1; // nomor urut dari daftar 12
+    const lines = [
+      `Halo kak, makasi ya aku dapat premium (${label}). Ditunggu ya kak, Makasii >.<`,
+      `> ${label}.${idx}.${pct}.2025`,
+      `> Waktu: ${formatNowJakarta()}`
+    ];
+    return lines.join('\n');
+  }
+  function openWhatsAppWith(text){
+    const url = 'https://api.whatsapp.com/send?phone=' + WA_NUMBER_E164 +
+                '&text=' + encodeURIComponent(text);
+    window.open(url, '_blank', 'noopener');
   }
 
   /* ===================== Giveaway Logic ===================== */
@@ -383,18 +464,21 @@ body{margin:0;background:#f9fafb;color:var(--text);font-family:system-ui,-apple-
   }
   function easeOutCubic(t){ return 1 - Math.pow(1 - t, 3); }
 
-  function openWhatsAppWith(text){
-    const url = 'https://api.whatsapp.com/send?phone=' + WA_NUMBER_E164 +
-                '&text=' + encodeURIComponent(text);
-    window.open(url, '_blank', 'noopener');
-  }
-
   function showClaimPopup(winnerKey){
-    claimText.innerHTML = 'Kamu mendapatkan <b>Premium (' + winnerKey + ')</b>.<br>Klik <b>Claim</b> untuk menerimanya.<br><small><u>Screnshot sebagai bukti (no screnshot=hangus)';
-    claimOverlay.style.display = 'flex';
+    const label = LABELS[winnerKey] || winnerKey;
+    const pct   = PCT_MAP[winnerKey] ?? '?';
+    const msg   = buildWaMessage(winnerKey);
 
-    const waMsg = 'halo kak, makasi ya aku dapat premium (' + winnerKey + '). Ditunggu ya kak';
-    btnClaim.onclick = () => openWhatsAppWith(waMsg);
+    document.getElementById('claimText').textContent =
+`Kamu mendapatkan Premium (${label}).
+Klik "Claim" untuk menerimanya.
+
+Rangkuman:
+• Pilihan: ${label} (${winnerKey}) — ${pct}% 
+• Waktu: ${formatNowJakarta()}`;
+
+    claimOverlay.style.display = 'flex';
+    btnClaim.onclick = () => openWhatsAppWith(msg);
     btnCloseClaim.onclick = () => { claimOverlay.style.display = 'none'; };
     claimOverlay.addEventListener('click', (e)=>{
       if(e.target === claimOverlay) claimOverlay.style.display = 'none';
@@ -402,6 +486,9 @@ body{margin:0;background:#f9fafb;color:var(--text);font-family:system-ui,-apple-
   }
 
   async function spinOnce(){
+    // Nyalakan musik juga jika belum (jaga-jaga)
+    startMusicOnce();
+
     startBtn.disabled = true;
     startBtn.textContent = 'Spinning...';
 
@@ -434,7 +521,7 @@ body{margin:0;background:#f9fafb;color:var(--text);font-family:system-ui,-apple-
         const finalEl = slots[targetIndex];
         finalEl.classList.add('winner');
         startBtn.textContent = 'Selesai';
-        statusEl.textContent = 'Hasil: ' + winner;
+        statusEl.textContent = 'Hasil: ' + (LABELS[winner]||winner);
         lockForever(winner);
         showClaimPopup(winner);
       }
@@ -442,6 +529,7 @@ body{margin:0;background:#f9fafb;color:var(--text);font-family:system-ui,-apple-
     requestAnimationFrame(frame);
   }
 
+  // Locking (multi-store)
   async function markPlayedAllStores(resultKey){
     try { localStorage.setItem(STORAGE_KEY, STORAGE_VAL); } catch(e){}
     try { sessionStorage.setItem(STORAGE_KEY, STORAGE_VAL); } catch(e){}
@@ -457,11 +545,34 @@ body{margin:0;background:#f9fafb;color:var(--text);font-family:system-ui,-apple-
   }
 
   (async function initGame(){
+    // tombol START juga trigger musik
+    document.getElementById('gwStart').addEventListener('click', startMusicOnce, {once:true});
+
+    // Render board sudah dilakukan di atas
+
+    // Cek sudah pernah main?
+    async function alreadyPlayed(){
+      try{ if(localStorage.getItem(STORAGE_KEY)===STORAGE_VAL) return true; }catch(e){}
+      try{ if(sessionStorage.getItem(STORAGE_KEY)===STORAGE_VAL) return true; }catch(e){}
+      try{ if(getCookie(STORAGE_KEY)===STORAGE_VAL) return true; }catch(e){}
+      try{ if(await idbGet('gwDB','flags', STORAGE_KEY)) return true; }catch(e){}
+      try{ if(await cacheHas('gwCache', STORAGE_KEY)) return true; }catch(e){}
+      return false;
+    }
+    async function getSavedResult(){
+      try{
+        let r = localStorage.getItem(RESULT_KEY);
+        if(r) return r;
+        r = await idbGet('gwDB','flags', RESULT_KEY);
+        return r || null;
+      }catch(e){ return null; }
+    }
+
     if(await alreadyPlayed()){
       startBtn.disabled = true;
       startBtn.textContent = 'Sudah mengikuti';
       const r = await getSavedResult();
-      statusEl.textContent = r ? ('Hasil: ' + r) : 'Sudah mengikuti';
+      statusEl.textContent = r ? ('Hasil: ' + (LABELS[r]||r)) : 'Sudah mengikuti';
       if(r){
         const idx = OPTIONS.findIndex(o=>o.key===r);
         if(idx>=0){ slots[idx].classList.add('winner'); }
