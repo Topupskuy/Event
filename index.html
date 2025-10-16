@@ -456,10 +456,12 @@ body{
     return lines.join('\n');
   }
   function openWhatsAppWith(text){
-    const url = 'https://api.whatsapp.com/send?phone=' + WA_NUMBER_E164 +
-                '&text=' + encodeURIComponent(text);
-    window.open(url, '_blank', 'noopener');
-  }
+  const url = 'https://api.whatsapp.com/send?phone=' + WA_NUMBER_E164 +
+              '&text=' + encodeURIComponent(text);
+  const w = window.open(url, '_blank', 'noopener');
+  if (!w) location.href = url;
+}
+
 
   /* ===================== Giveaway Logic ===================== */
   function pickWeighted(){
@@ -489,12 +491,14 @@ Rangkuman:
 !! Jangan lupa di screenshot, no screnshot=hangus !!`;
 
     claimOverlay.style.display = 'flex';
-    btnClaim.onclick = () => openWhatsAppWith(msg);
+  btnClaim.onclick = () => openWhatsAppWith(msg);
+  if (btnCloseClaim) {
     btnCloseClaim.onclick = () => { claimOverlay.style.display = 'none'; };
-    claimOverlay.addEventListener('click', (e)=>{
-      if(e.target === claimOverlay) claimOverlay.style.display = 'none';
-    }, { once:true });
   }
+  claimOverlay.addEventListener('click', (e)=>{
+    if(e.target === claimOverlay) claimOverlay.style.display = 'none';
+  }, { once:true });
+}
 
   async function spinOnce(){
     // Nyalakan musik juga jika belum (jaga-jaga)
