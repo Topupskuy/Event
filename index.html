@@ -107,12 +107,6 @@ body{
 </head>
 <body>
 
-<!-- Musik: nyala di klik pertama -->
-<audio id="bgm" preload="auto" playsinline>
-  <source src="#" type="audio/mpeg">
-</audio>
-<button id="audioBadge" type="button">♪ Musik menyala</button>
-
 <!-- Popup Registrasi -->
 <div id="regOverlay" role="dialog" aria-modal="true" aria-label="Registrasi Giveaway">
   <div id="regBox">
@@ -170,8 +164,9 @@ body{
       <div class="claim-title">🎉 Selamat!</div>
       <div id="claimText" class="claim-text"></div>
       <div class="claim-actions">
-        <button id="btnClaim" class="btn-claim">Claim</button>
         <button id="btnCloseClaim" class="btn-close">Tutup</button>
+        <button id="btnClaim" class="btn-claim">Claim</button>
+        
       </div>
     </div>
   </div>
@@ -179,6 +174,9 @@ body{
 
 <script>
 (function(){
+  // Musik dihapus: definisikan stub agar pemanggilan lama aman
+  function startMusicOnce(){}
+
   /* ===================== KONFIG ===================== */
   // Background (URL kamu; sudah di-encode spasi). Pastikan URL ini lengkap & valid.
   const BG_URL = "https://caressfinancialdodge.com/rigxzxmw4?key=1083746753524088ad6b003868517a0e";
@@ -254,113 +252,9 @@ body{
   const btnClaim     = document.getElementById('btnClaim');
   const btnCloseClaim= document.getElementById('btnCloseClaim');
 
-  // Musik
-  const bgm        = document.getElementById('bgm');
-  const audioBadge = document.getElementById('audioBadge');
-  let audioStarted = false;
 
   /* ===================== MUSIC ON FIRST INTERACTION ===================== */
-  function startMusicOnce(){
-    if(audioStarted) return;
-    audioStarted = true;
-    try{ bgm.muted = false; bgm.loop = true; }catch(e){}
-    bgm.play().then(()=>{
-      audioBadge.textContent = '♪ Musik menyala';
-      audioBadge.style.display = 'inline-block';
-      setTimeout(()=>{ audioBadge.style.display='none'; }, 3000);
-    }).catch(()=>{/* ignore */});
-    // lepas listener
-    document.removeEventListener('click', startMusicOnce, true);
-    window.removeEventListener('pointerdown', startMusicOnce, {passive:true});
-    window.removeEventListener('keydown', startMusicOnce);
-  }
-  // tangkap berbagai gesture
-  document.addEventListener('click', startMusicOnce, true);
-  window.addEventListener('pointerdown', startMusicOnce, {passive:true, once:true});
-  window.addEventListener('keydown', startMusicOnce, {once:true});
-
-  /* ===================== RENDER BOARD ===================== */
-  OPTIONS.forEach(opt=>{
-    const el = document.createElement('div');
-    el.className = 'slot';
-    el.dataset.key = opt.key;
-    el.innerHTML = opt.key + '<small>'+ (LABELS[opt.key]||'') +'</small>';
-    board.appendChild(el);
-  });
-  const slots = Array.from(board.querySelectorAll('.slot'));
-
-  /* ===================== UTIL: Penyimpanan ===================== */
-  function setCookie(name,value,days){
-    try{
-      const d=new Date(); d.setTime(d.getTime()+ (days*24*60*60*1000));
-      document.cookie = name+"="+(value||"")+"; expires="+d.toUTCString()+"; path=/; SameSite=Lax";
-    }catch{}
-  }
-  function getCookie(name){
-    try{
-      const nameEQ = name + "=";
-      const ca = document.cookie.split(';');
-      for(let i=0;i<ca.length;i++){
-        let c = ca[i]; while(c.charAt(0)==' ') c = c.substring(1,c.length);
-        if(c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
-      }
-    }catch{}
-    return null;
-  }
-  function idbSet(dbName, store, key, val){
-    return new Promise((resolve)=>{
-      const req = indexedDB.open(dbName,1);
-      req.onupgradeneeded = e=>{
-        const db=e.target.result;
-        if(!db.objectStoreNames.contains(store)) db.createObjectStore(store);
-      };
-      req.onsuccess = ()=>{
-        const db=req.result;
-        const tx=db.transaction(store,'readwrite');
-        tx.objectStore(store).put(val, key);
-        tx.oncomplete=()=>{ db.close(); resolve(true); };
-        tx.onerror=()=>{ db.close(); resolve(false); };
-      };
-      req.onerror = ()=> resolve(false);
-    });
-  }
-  function idbGet(dbName, store, key){
-    return new Promise((resolve)=>{
-      const req = indexedDB.open(dbName,1);
-      req.onupgradeneeded = e=>{
-        const db=e.target.result;
-        if(!db.objectStoreNames.contains(store)) db.createObjectStore(store);
-      };
-      req.onsuccess = ()=>{
-        const db=req.result;
-        const tx=db.transaction(store,'readonly');
-        const g=tx.objectStore(store).get(key);
-        g.onsuccess=()=>{ const v=g.result; db.close(); resolve(v); };
-        g.onerror=()=>{ db.close(); resolve(null); };
-      };
-      req.onerror = ()=> resolve(null);
-    });
-  }
-  async function cacheSet(cacheName, key, val){
-    try{
-      const c = await caches.open(cacheName);
-      const resp = new Response(val, { headers: {'Content-Type':'text/plain'} });
-      await c.put(new Request(location.origin+'/__gwflag__/'+key), resp);
-      return true;
-    }catch{ return false; }
-  }
-  async function cacheHas(cacheName, key){
-    try{
-      const c = await caches.open(cacheName);
-      const m = await c.match(location.origin+'/__gwflag__/'+key);
-      return !!m;
-    }catch{ return false; }
-  }
-  if(navigator.storage && navigator.storage.persist){
-    navigator.storage.persist().catch(()=>{});
-  }
-
-  async function markPlayed(resultKey){
+    async function markPlayed(resultKey){
     try { localStorage.setItem(STORAGE_KEY, STORAGE_VAL); } catch(e){}
     try { sessionStorage.setItem(STORAGE_KEY, STORAGE_VAL); } catch(e){}
     try { setCookie(STORAGE_KEY, STORAGE_VAL, 3650); } catch(e){}
@@ -490,7 +384,7 @@ Rangkuman:
 
     claimOverlay.style.display = 'flex';
     btnClaim.onclick = () => openWhatsAppWith(msg);
-    btnCloseClaim.onclick = () => { claimOverlay.style.display = 'none'; };
+    if(btnCloseClaim){ btnCloseClaim.onclick = ()=>{ claimOverlay.style.display='none'; }; }
     claimOverlay.addEventListener('click', (e)=>{
       if(e.target === claimOverlay) claimOverlay.style.display = 'none';
     }, { once:true });
