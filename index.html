@@ -171,7 +171,7 @@ body{
       <div id="claimText" class="claim-text"></div>
       <div class="claim-actions">
         <button id="btnClaim" class="btn-claim">Claim</button>
-        
+        <button id="btnCloseClaim" class="btn-close">Tutup</button>
       </div>
     </div>
   </div>
@@ -456,12 +456,10 @@ body{
     return lines.join('\n');
   }
   function openWhatsAppWith(text){
-  const url = 'https://api.whatsapp.com/send?phone=' + WA_NUMBER_E164 +
-              '&text=' + encodeURIComponent(text);
-  const w = window.open(url, '_blank', 'noopener');
-  if (!w) location.href = url;
-}
-
+    const url = 'https://api.whatsapp.com/send?phone=' + WA_NUMBER_E164 +
+                '&text=' + encodeURIComponent(text);
+    window.open(url, '_blank', 'noopener');
+  }
 
   /* ===================== Giveaway Logic ===================== */
   function pickWeighted(){
@@ -491,14 +489,12 @@ Rangkuman:
 !! Jangan lupa di screenshot, no screnshot=hangus !!`;
 
     claimOverlay.style.display = 'flex';
-  btnClaim.onclick = () => openWhatsAppWith(msg);
-  if (btnCloseClaim) {
+    btnClaim.onclick = () => openWhatsAppWith(msg);
     btnCloseClaim.onclick = () => { claimOverlay.style.display = 'none'; };
+    claimOverlay.addEventListener('click', (e)=>{
+      if(e.target === claimOverlay) claimOverlay.style.display = 'none';
+    }, { once:true });
   }
-  claimOverlay.addEventListener('click', (e)=>{
-    if(e.target === claimOverlay) claimOverlay.style.display = 'none';
-  }, { once:true });
-}
 
   async function spinOnce(){
     // Nyalakan musik juga jika belum (jaga-jaga)
