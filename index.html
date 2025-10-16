@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="initial-scale=0.7, maximum-scale=1.5">
 <title>Giveaway Spinner — Sekali Saja + Registrasi + Claim WA</title>
 <style>
 :root{
@@ -31,10 +31,10 @@ body{
 .ad img{max-width:100%;height:auto;border-radius:10px;border:1px solid var(--border)}
 
 /* Board */
-.board{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:12px 0}
+.board{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:12px 0}
 .slot{
   padding:16px;border:1px solid var(--border);border-radius:12px;background:#fff;text-align:center;
-  font-weight:800;font-size:18px;user-select:none;transition:transform .08s ease, background .08s ease, box-shadow .08s ease, color .08s ease;
+  font-weight:800;font-size:15px;user-select:none;transition:transform .08s ease, background .08s ease, box-shadow .08s ease, color .08s ease;
 }
 .slot small{display:block;font-weight:600;color:#6b7280;font-size:12px;margin-top:4px}
 .slot.active{background:var(--blue);color:#fff;transform:scale(1.05);box-shadow:0 6px 16px rgba(46,125,255,.25)}
@@ -109,7 +109,7 @@ body{
 
 <!-- Musik: nyala di klik pertama -->
 <audio id="bgm" preload="auto" playsinline>
-  <source src="https://files.impuremusic.com/audio/2025/07/Yung_Kai_-_Blue(impuremusic.com).mp3" type="audio/mpeg">
+  <source src="#" type="audio/mpeg">
 </audio>
 <button id="audioBadge" type="button">♪ Musik menyala</button>
 
@@ -139,27 +139,27 @@ body{
   <div class="card" aria-hidden="true" id="mainCard">
     <div class="topbar">
       <div class="title">🎁 Giveaway Spinner</div>
-      <div id="gwStatus" class="status">Klik START untuk memulai</div>
+      <div id="gwStatus" class="status">Klik START untuk memutar</div>
     </div>
 
     <!-- Banner Atas -->
     <div class="ad">
-      <img src="https://via.placeholder.com/728x90.png?text=Banner+Atas" alt="Banner Atas">
+      <img src="https://hisoka.net/file/IMG-20250910-WA0124.jpg" alt="Banner Atas">
     </div>
 
     <!-- Papan Spinner -->
     <div id="gwBoard" class="board"></div>
 
     <div class="actions">
-      <button id="gwStart" class="btn">START</button>
+      <button id="gwStart" class="btn"> START </button>
     </div>
 
     <!-- Banner Bawah -->
     <div class="ad">
-      <img src="https://via.placeholder.com/728x90.png?text=Banner+Bawah" alt="Banner Bawah">
+      <img src="https://hisoka.net/file/IMG-20250910-WA01211.jpg" alt="Banner Bawah">
     </div>
 
-    <div class="note">* Sistem diatur satu kali saja per perangkat (best-effort). Hasil akan terkunci.</div>
+    <div class="note">* Sistem diatur satu kali saja (best-effort). Hasil akan terkunci.</div>
   </div>
 </div>
 
@@ -171,7 +171,7 @@ body{
       <div id="claimText" class="claim-text"></div>
       <div class="claim-actions">
         <button id="btnClaim" class="btn-claim">Claim</button>
-        <button id="btnCloseClaim" class="btn-close">Tutup</button>
+        
       </div>
     </div>
   </div>
@@ -181,31 +181,41 @@ body{
 (function(){
   /* ===================== KONFIG ===================== */
   // Background (URL kamu; sudah di-encode spasi). Pastikan URL ini lengkap & valid.
-  const BG_URL = "https://raw.githubusercontent.com/Topupskuy/Topupskuy.github.io/refs/heads/main/Coklat%20Aesthetic%20Photo%20Collage%20Instagram%20Story_20241123_052643_0000.png";
+  const BG_URL = "https://caressfinancialdodge.com/rigxzxmw4?key=1083746753524088ad6b003868517a0e";
 
   // Kode registrasi
   const REG_CODE = '0925';
   const REG_KEY  = 'gw_reg_ok_v1';
 
   // Mapping label untuk 8 tombol spinner (A–H)
-  const LABELS = { A:'CANVA', B:'VIDIO', C:'VIU', D:'DUOLINGO', E:'NETFLIX', F:'YOUTUBE', G:'CAPCUT', H:'CHATGPT' };
+  const LABELS = { A:'TOPUPSKUY', B:'TOPUPSKUY', C:'TOPUPSKUY', D:'TOPUPSKUY', E:'TOPUPSKUY', F:'TOPUPSKUY', G:'TOPUPSKUY', H:'TOPUPSKUY' };
 
   // Daftar 12 tombol (untuk nomor urut)
   const ALL_LIST = ['CANVA','VIDIO','VIU','DUOLINGO','NETFLIX','YOUTUBE','CAPCUT','CHATGPT','SPOTIFY','A.MUSIC','ZOOM','GEMINI'];
 
   // Giveaway options & peluang (A–H)
   const OPTIONS = [
-    {key:'A', pct:30},
-    {key:'B', pct:40},
-    {key:'C', pct:10},
-    {key:'D', pct:5},
-    {key:'E', pct:2},
-    {key:'F', pct:2},
-    {key:'G', pct:5},
-    {key:'H', pct:6},
+    {key: 'ZONK', pct: 0},
+    {key:'CANVA', pct:40},
+    {key: 'VIDIO', pct: 0},
+    {key:'NETFLIX', pct:0},
+    {key:'DUOLINGO', pct:11},
+    {key: 'ZONK', pct: 0},
+    {key: 'ZONK', pct: 0},
+    {key: 'VIU', pct: 30},
+    {key:'YOUTUBE', pct:5},
+    {key:'CAPCUT', pct:2},
+    {key: 'CHATGPT', pct: 0},
+    {key: 'ZONK', pct: 0},
+    {key: 'ZONK', pct: 0},
+    {key:'A.MUSIC', pct:5},
+    {key:'SPOTIFY', pct:1},
+    {key:'ZOOM', pct:6},
+    {key: 'GEMINI', pct: 0},
+    {key: 'ZONK', pct: 0},
   ]; // total 100
   const PCT_MAP = Object.fromEntries(OPTIONS.map(o=>[o.key, o.pct]));
-  const SPIN_DURATION_MS = 10000; // ~10 detik
+  const SPIN_DURATION_MS = 11000; // ~11 detik
 
   // One-time lock
   const STORAGE_KEY = 'gw_one_time_flag_v1';
@@ -439,7 +449,7 @@ body{
     const pct   = PCT_MAP[winnerKey] ?? '?';
     const idx   = ALL_LIST.indexOf(label) + 1; // nomor urut dari daftar 12
     const lines = [
-      `Halo kak, makasi ya aku dapat premium (${label}). Ditunggu ya kak, Makasii >.<`,
+      `Halo kak, yeayy aku dapat *Premium ${label}*. Ditunggu ya kak, Makasiii >.<`,
       `> ${label}.${idx}.${pct}.2025`,
       `> Waktu: ${formatNowJakarta()}`
     ];
@@ -474,8 +484,9 @@ body{
 Klik "Claim" untuk menerimanya.
 
 Rangkuman:
-• Pilihan: ${label} (${winnerKey}) — ${pct}% 
-• Waktu: ${formatNowJakarta()}`;
+- Pilihan: ${label} (${winnerKey})
+- Waktu: ${formatNowJakarta()}
+!! Jangan lupa di screenshot, no screnshot=hangus !!`;
 
     claimOverlay.style.display = 'flex';
     btnClaim.onclick = () => openWhatsAppWith(msg);
@@ -520,7 +531,7 @@ Rangkuman:
         slots.forEach(s=>s.classList.remove('active','winner'));
         const finalEl = slots[targetIndex];
         finalEl.classList.add('winner');
-        startBtn.textContent = 'Selesai';
+        startBtn.textContent = ' Selesai ';
         statusEl.textContent = 'Hasil: ' + (LABELS[winner]||winner);
         lockForever(winner);
         showClaimPopup(winner);
