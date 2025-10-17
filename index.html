@@ -2,8 +2,8 @@
 <html lang="id">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="initial-scale=0.7, maximum-scale=1.5">
-<title>Giveaway Spinner — Sekali Saja + Registrasi + Claim WA</title>
+<meta name="viewport" content="initial-scale=0.7, maximum-scale=1.5, user-scalable=yes">
+<title>Giveaway Spinner — Multi Cycle + Registrasi + Claim WA</title>
 <style>
 :root{
   --blue:#2e7dff; --green:#16a34a; --border:#e5e7eb; --text:#111; --muted:#6b7280; --bg:rgba(255,255,255,.88);
@@ -15,18 +15,17 @@ html,body{height:100%}
 body{
   margin:0;color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
   background: linear-gradient(180deg,#f3f4f6,#e5e7eb); /* fallback */
-  background-attachment: fixed;
-  background-size: cover;
+  background-attachment: fixed; background-size: cover; background-position:center;
 }
 
-/* Glassy wrapper */
+/* Shell */
 .wrap{max-width:var(--maxw);margin:24px auto;padding:16px}
 .card{background:var(--bg);backdrop-filter: blur(6px);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px}
 .topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:10px}
 .title{font-weight:800;font-size:20px}
 .status{font-size:13px;color:var(--muted)}
 
-/* Ads placeholders */
+/* Ads */
 .ad{display:block;text-align:center;margin:12px 0}
 .ad img{max-width:100%;height:auto;border-radius:10px;border:1px solid var(--border)}
 
@@ -36,7 +35,7 @@ body{
   padding:16px;border:1px solid var(--border);border-radius:12px;background:#fff;text-align:center;
   font-weight:800;font-size:15px;user-select:none;transition:transform .08s ease, background .08s ease, box-shadow .08s ease, color .08s ease;
 }
-.slot small{display:block;font-weight:600;color:#6b7280;font-size:12px;margin-top:4px}
+.slot small{display:none;font-weight:600;color:#6b7280;font-size:0px;margin-top:4px}
 .slot.active{background:var(--blue);color:#fff;transform:scale(1.05);box-shadow:0 6px 16px rgba(46,125,255,.25)}
 .slot.winner{background:var(--green);color:#fff;transform:scale(1.08);box-shadow:0 8px 22px rgba(22,163,74,.28)}
 
@@ -46,7 +45,6 @@ body{
   padding:12px 18px;border-radius:10px;border:2px solid var(--blue);background:var(--blue);color:#fff;font-weight:800;cursor:pointer
 }
 .btn[disabled]{opacity:.6;cursor:not-allowed}
-
 .note{font-size:12px;color:var(--muted);margin-top:6px}
 
 /* Popup Claim */
@@ -54,51 +52,33 @@ body{
   position:fixed;inset:0;background:rgba(0,0,0,.6);
   display:none;align-items:center;justify-content:center;z-index:2000;padding:16px
 }
-#claimBox{
-  width:min(92vw,520px);background:#fff;border:1px solid var(--border);
-  border-radius:16px;box-shadow:var(--shadow);overflow:hidden
-}
+#claimBox{width:min(92vw,520px);background:#fff;border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow);overflow:hidden}
 .claim-body{padding:16px}
 .claim-title{font-weight:900;font-size:18px;margin-bottom:6px}
 .claim-text{font-size:14px;color:#374151;margin-bottom:14px;white-space:pre-line}
 .claim-actions{display:flex;gap:10px;flex-wrap:wrap}
-.claim-actions .btn-claim{
-  padding:10px 14px;border-radius:10px;border:2px solid #16a34a;background:#16a34a;color:#fff;font-weight:800;cursor:pointer
-}
-.claim-actions .btn-close{
-  padding:10px 14px;border-radius:10px;border:1px solid var(--border);background:#fff;color:#111;font-weight:700;cursor:pointer
-}
+.btn-claim{padding:10px 14px;border-radius:10px;border:2px solid #16a34a;background:#16a34a;color:#fff;font-weight:800;cursor:pointer}
+.btn-close{padding:10px 14px;border-radius:10px;border:1px solid var(--border);background:#fff;color:#111;font-weight:700;cursor:pointer}
 
 /* Popup Registrasi */
 #regOverlay{
   position:fixed;inset:0;background:rgba(0,0,0,.6);
   display:flex;align-items:center;justify-content:center;z-index:3000;padding:16px
 }
-#regBox{
-  width:min(92vw,460px);background:#fff;border:1px solid var(--border);
-  border-radius:16px;box-shadow:var(--shadow);overflow:hidden
-}
+#regBox{width:min(92vw,460px);background:#fff;border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow);overflow:hidden}
 .reg-body{padding:16px}
 .reg-title{font-weight:900;font-size:18px;margin-bottom:10px}
 .reg-text{font-size:14px;color:#374151;margin-bottom:14px}
 .reg-field{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
-.reg-input{
-  flex:1 1 200px;padding:10px 12px;border:1px solid var(--border);border-radius:10px;font-size:14px
-}
+.reg-input{flex:1 1 200px;padding:10px 12px;border:1px solid var(--border);border-radius:10px;font-size:14px}
 .reg-actions{display:flex;gap:8px;flex-wrap:wrap}
-.btn-verify{
-  padding:10px 14px;border-radius:10px;border:2px solid var(--blue);background:var(--blue);color:#fff;font-weight:800;cursor:pointer
-}
-.btn-contact{
-  padding:10px 14px;border-radius:10px;border:1px solid var(--border);background:#fff;color:#111;font-weight:700;cursor:pointer
-}
+.btn-verify{padding:10px 14px;border-radius:10px;border:2px solid var(--blue);background:var(--blue);color:#fff;font-weight:800;cursor:pointer}
+.btn-contact{padding:10px 14px;border-radius:10px;border:1px solid var(--border);background:#fff;color:#111;font-weight:700;cursor:pointer}
 .reg-error{color:#dc2626;font-size:13px;margin-top:8px;min-height:18px}
-
-/* shake animation on error */
 @keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
 .shake{animation:shake .35s linear}
 
-/* Audio badge (optional) */
+/* Audio badge */
 #audioBadge{
   position:fixed;right:12px;bottom:12px;z-index:10;
   padding:8px 12px;border:0;border-radius:999px;background:rgba(0,0,0,.65);color:#fff;font:600 13px/1.2 system-ui;cursor:pointer;display:none
@@ -109,7 +89,8 @@ body{
 
 <!-- Musik: nyala di klik pertama -->
 <audio id="bgm" preload="auto" playsinline>
-  <source src="#" type="audio/mpeg">
+  <!-- Ganti AUDIO_URL di script bila perlu -->
+  <source id="bgmSrc" src="" type="audio/mpeg">
 </audio>
 <button id="audioBadge" type="button">♪ Musik menyala</button>
 
@@ -139,7 +120,7 @@ body{
   <div class="card" aria-hidden="true" id="mainCard">
     <div class="topbar">
       <div class="title">🎁 Giveaway Spinner</div>
-      <div id="gwStatus" class="status">Klik START untuk memutar</div>
+      <div id="gwStatus" class="status">Klik START untuk memulai</div>
     </div>
 
     <!-- Banner Atas -->
@@ -159,7 +140,7 @@ body{
       <img src="https://hisoka.net/file/IMG-20250910-WA01211.jpg" alt="Banner Bawah">
     </div>
 
-    <div class="note">* Sistem diatur satu kali saja (best-effort). Hasil akan terkunci.</div>
+    <div class="note">* Sistem diatur satu kali (best-effort). Hasil akan terkunci.</div>
   </div>
 </div>
 
@@ -171,7 +152,6 @@ body{
       <div id="claimText" class="claim-text"></div>
       <div class="claim-actions">
         <button id="btnClaim" class="btn-claim">Claim</button>
-        
       </div>
     </div>
   </div>
@@ -179,63 +159,71 @@ body{
 
 <script>
 (function(){
+  /* ====== VERSI (Cycle) — ubah angka ini untuk “refresh semua orang” ====== */
+  let CYCLE_ID = 1; // ← GANTI ke 2, 3, ... saat mau reset global
+  // (Opsional) override via URL ?cycle=5
+  try{
+    const sp = new URLSearchParams(location.search);
+    const ov = sp.get('cycle');
+    if (ov && /^\d+$/.test(ov)) CYCLE_ID = Number(ov);
+  }catch(e){}
+  const SUFFIX    = '_cycle_${CYCLE_ID}';
+  const DB_NAME   = 'gwDB${SUFFIX}';
+  const CACHE_NAME= 'gwCache${SUFFIX}';
+
   /* ===================== KONFIG ===================== */
-  // Background (URL kamu; sudah di-encode spasi). Pastikan URL ini lengkap & valid.
-  const BG_URL = "https://caressfinancialdodge.com/rigxzxmw4?key=1083746753524088ad6b003868517a0e";
+  // Background & Musik
+  const BG_URL    = "#"; // ganti bila perlu
+  const AUDIO_URL = "#"; // ganti bila perlu
 
-  // Kode registrasi
-  const REG_CODE = '91201';
-  const REG_KEY  = 'gw_reg_ok_v2';
+  // Password registrasi per siklus (ubah sesuka hati)
+  const REG_CODE_MAP = {
+    1: '0921',
+  };
+  const REG_CODE = REG_CODE_MAP[CYCLE_ID] || '0921';
 
-  // Mapping label untuk 8 tombol spinner (A–H)
-  const LABELS = { A:'TOPUPSKUY', B:'TOPUPSKUY', C:'TOPUPSKUY', D:'TOPUPSKUY', E:'TOPUPSKUY', F:'TOPUPSKUY', G:'TOPUPSKUY', H:'TOPUPSKUY' };
-
-  // Daftar 12 tombol (untuk nomor urut)
-  const ALL_LIST = ['CANVA','VIDIO','VIU','DUOLINGO','NETFLIX','YOUTUBE','CAPCUT','CHATGPT','SPOTIFY','A.MUSIC','ZOOM','GEMINI'];
-
-  // Giveaway options & peluang (A–H)
-  const OPTIONS = [
-    {key: 'ZONK', pct: 0},
-    {key:'CANVA', pct:40},
-    {key: 'VIDIO', pct: 0},
-    {key:'NETFLIX', pct:0},
-    {key:'DUOLINGO', pct:11},
-    {key: 'ZONK', pct: 0},
-    {key: 'ZONK', pct: 0},
-    {key: 'VIU', pct: 30},
-    {key:'YOUTUBE', pct:5},
-    {key:'CAPCUT', pct:2},
-    {key: 'CHATGPT', pct: 0},
-    {key: 'ZONK', pct: 0},
-    {key: 'ZONK', pct: 0},
-    {key:'A.MUSIC', pct:5},
-    {key:'SPOTIFY', pct:1},
-    {key:'ZOOM', pct:6},
-    {key: 'GEMINI', pct: 0},
-    {key: 'ZONK', pct: 0},
-  ]; // total 100
-  const PCT_MAP = Object.fromEntries(OPTIONS.map(o=>[o.key, o.pct]));
-  const SPIN_DURATION_MS = 11000; // ~11 detik
-
-  // One-time lock
-  const STORAGE_KEY = 'gw_one_time_flag_v1';
+  // Penyimpanan (versioned by cycle)
+  const REG_KEY     = 'gw_reg_ok${SUFFIX}';
+  const STORAGE_KEY = 'gw_played${SUFFIX}';
   const STORAGE_VAL = 'played';
-  const RESULT_KEY  = 'gw_result_v1';
+  const RESULT_KEY  = 'gw_result${SUFFIX}';
 
-  // WhatsApp
+  // WhatsApp tujuan
   const WA_NUMBER_E164 = '6283847540571';
 
-  /* ===================== BACKGROUND LOADER ===================== */
+  // Daftar 12 tombol + persen (total 100). Bebas kamu ubah nilainya.
+  const OPTIONS = [
+    {key:'CANVA',    pct:70},
+    {key:'VIDIO',    pct: 0},
+    {key:'VIU',      pct:0},
+    {key:'DUOLINGO', pct:14},
+    {key:'NETFLIX',  pct: 0},
+    {key:'YOUTUBE',  pct: 5},
+    {key:'CAPCUT',   pct: 2},
+    {key:'CHATGPT',  pct: 0},
+    {key:'SPOTIFY',  pct: 1},
+    {key:'A.MUSIC',  pct: 5},
+    {key:'ZOOM',     pct: 3},
+    {key:'GEMINI',   pct: 0},
+  ];
+  const PCT_MAP = Object.fromEntries(OPTIONS.map(o=>[o.key,o.pct]));
+  const ALL_LIST = OPTIONS.map(o=>o.key);
+  const SPIN_DURATION_MS = 11000;
+
+  /* ===================== BACKGROUND & AUDIO ===================== */
   (function loadBg(){
     if(!BG_URL) return;
     const img = new Image();
-    img.onload = ()=>{ document.body.style.backgroundImage = `url('${BG_URL}')`; };
-    img.onerror = ()=>{ /* tetap pakai fallback gradient */ };
+    img.onload = ()=>{ document.body.style.backgroundImage = 'url('${BG_URL}')'; };
+    img.onerror = ()=>{};
     img.src = BG_URL;
   })();
+  (function setAudio(){
+    const s = document.getElementById('bgmSrc');
+    if (s) s.src = AUDIO_URL || '';
+  })();
 
-  /* ===================== ELEMEN DOM ===================== */
-  // Registrasi
+  /* ===================== DOM ===================== */
   const regOverlay = document.getElementById('regOverlay');
   const regInput   = document.getElementById('regInput');
   const regVerify  = document.getElementById('regVerify');
@@ -243,23 +231,20 @@ body{
   const regError   = document.getElementById('regError');
   const mainCard   = document.getElementById('mainCard');
 
-  // Giveaway
-  const board   = document.getElementById('gwBoard');
-  const startBtn= document.getElementById('gwStart');
-  const statusEl= document.getElementById('gwStatus');
+  const board    = document.getElementById('gwBoard');
+  const startBtn = document.getElementById('gwStart');
+  const statusEl = document.getElementById('gwStatus');
 
-  // Claim popup
   const claimOverlay = document.getElementById('claimOverlay');
   const claimText    = document.getElementById('claimText');
   const btnClaim     = document.getElementById('btnClaim');
-  const btnCloseClaim= document.getElementById('btnCloseClaim');
+  const btnClose     = document.getElementById('btnClose');
 
-  // Musik
-  const bgm        = document.getElementById('bgm');
-  const audioBadge = document.getElementById('audioBadge');
-  let audioStarted = false;
+  const bgm          = document.getElementById('bgm');
+  const audioBadge   = document.getElementById('audioBadge');
+  let audioStarted   = false;
 
-  /* ===================== MUSIC ON FIRST INTERACTION ===================== */
+  /* ===================== MUSIC FIRST INTERACTION ===================== */
   function startMusicOnce(){
     if(audioStarted) return;
     audioStarted = true;
@@ -267,29 +252,27 @@ body{
     bgm.play().then(()=>{
       audioBadge.textContent = '♪ Musik menyala';
       audioBadge.style.display = 'inline-block';
-      setTimeout(()=>{ audioBadge.style.display='none'; }, 3000);
-    }).catch(()=>{/* ignore */});
-    // lepas listener
+      setTimeout(()=>{ audioBadge.style.display='none'; }, 2500);
+    }).catch(()=>{});
     document.removeEventListener('click', startMusicOnce, true);
-    window.removeEventListener('pointerdown', startMusicOnce, {passive:true});
+    window.removeEventListener('pointerdown', startMusicOnce);
     window.removeEventListener('keydown', startMusicOnce);
   }
-  // tangkap berbagai gesture
   document.addEventListener('click', startMusicOnce, true);
   window.addEventListener('pointerdown', startMusicOnce, {passive:true, once:true});
   window.addEventListener('keydown', startMusicOnce, {once:true});
 
   /* ===================== RENDER BOARD ===================== */
-  OPTIONS.forEach(opt=>{
+  OPTIONS.forEach((opt,i)=>{
     const el = document.createElement('div');
     el.className = 'slot';
     el.dataset.key = opt.key;
-    el.innerHTML = opt.key + '<small>'+ (LABELS[opt.key]||'') +'</small>';
+    el.innerHTML = '${opt.key}<small>${opt.pct}%</small>';
     board.appendChild(el);
   });
   const slots = Array.from(board.querySelectorAll('.slot'));
 
-  /* ===================== UTIL: Penyimpanan ===================== */
+  /* ===================== STORAGE UTILS ===================== */
   function setCookie(name,value,days){
     try{
       const d=new Date(); d.setTime(d.getTime()+ (days*24*60*60*1000));
@@ -356,37 +339,34 @@ body{
       return !!m;
     }catch{ return false; }
   }
-  if(navigator.storage && navigator.storage.persist){
-    navigator.storage.persist().catch(()=>{});
-  }
 
   async function markPlayed(resultKey){
     try { localStorage.setItem(STORAGE_KEY, STORAGE_VAL); } catch(e){}
     try { sessionStorage.setItem(STORAGE_KEY, STORAGE_VAL); } catch(e){}
     try { setCookie(STORAGE_KEY, STORAGE_VAL, 3650); } catch(e){}
-    try { await idbSet('gwDB','flags', STORAGE_KEY, STORAGE_VAL); } catch(e){}
-    try { await cacheSet('gwCache', STORAGE_KEY, STORAGE_VAL); } catch(e){}
+    try { await idbSet(DB_NAME,'flags', STORAGE_KEY, STORAGE_VAL); } catch(e){}
+    try { await cacheSet(CACHE_NAME, STORAGE_KEY, STORAGE_VAL); } catch(e){}
     try { localStorage.setItem(RESULT_KEY, resultKey); } catch(e){}
-    try { await idbSet('gwDB','flags', RESULT_KEY, resultKey); } catch(e){}
+    try { await idbSet(DB_NAME,'flags', RESULT_KEY, resultKey); } catch(e){}
   }
   async function alreadyPlayed(){
     try{ if(localStorage.getItem(STORAGE_KEY)===STORAGE_VAL) return true; }catch(e){}
     try{ if(sessionStorage.getItem(STORAGE_KEY)===STORAGE_VAL) return true; }catch(e){}
     try{ if(getCookie(STORAGE_KEY)===STORAGE_VAL) return true; }catch(e){}
-    try{ if(await idbGet('gwDB','flags', STORAGE_KEY)) return true; }catch(e){}
-    try{ if(await cacheHas('gwCache', STORAGE_KEY)) return true; }catch(e){}
+    try{ if(await idbGet(DB_NAME,'flags', STORAGE_KEY)) return true; }catch(e){}
+    try{ if(await cacheHas(CACHE_NAME, STORAGE_KEY)) return true; }catch(e){}
     return false;
   }
   async function getSavedResult(){
     try{
       let r = localStorage.getItem(RESULT_KEY);
       if(r) return r;
-      r = await idbGet('gwDB','flags', RESULT_KEY);
+      r = await idbGet(DB_NAME,'flags', RESULT_KEY);
       return r || null;
     }catch(e){ return null; }
   }
 
-  /* ===================== Registrasi ===================== */
+  /* ===================== REGISTRASI ===================== */
   function waAdminLink(){
     const msg = "Halo kak, saya ingin mendapatkan kode registrasi Giveaway. Boleh kah saya ikut event bulan ini?\nTerima kasih kak";
     return 'https://api.whatsapp.com/send?phone=' + WA_NUMBER_E164 + '&text=' + encodeURIComponent(msg);
@@ -429,39 +409,37 @@ body{
     setTimeout(()=>{ regInput.focus(); }, 50);
   }
 
-  /* ===================== Formatting util ===================== */
+  /* ===================== FORMATTER ===================== */
   function formatNowJakarta(){
     try{
       const now = new Date();
       const d = new Intl.DateTimeFormat('id-ID', { timeZone:'Asia/Jakarta', day:'2-digit', month:'long', year:'numeric'}).format(now);
       const t = new Intl.DateTimeFormat('id-ID', { timeZone:'Asia/Jakarta', hour:'2-digit', minute:'2-digit', second:'2-digit', hour12:false }).format(now);
       const tDots = t.replaceAll(':','.');
-      return `${d} pukul ${tDots} WIB`;
+      return '${d} pukul ${tDots} WIB';
     }catch{
       const s = new Date().toLocaleString('id-ID');
-      return `${s} WIB`;
+      return '${s} WIB';
     }
   }
 
-  /* ===================== Pesan WA sesuai format baru ===================== */
   function buildWaMessage(winnerKey){
-    const label = LABELS[winnerKey] || winnerKey;
+    const label = winnerKey;
     const pct   = PCT_MAP[winnerKey] ?? '?';
-    const idx   = ALL_LIST.indexOf(label) + 1; // nomor urut dari daftar 12
+    const idx   = ALL_LIST.indexOf(label) + 1; // nomor urut 1..12
     const lines = [
-      `Halo kak, yeayy aku dapat *Premium ${label}*. Ditunggu ya kak, Makasiii >.<`,
-      `> ${label}.${idx}.${pct}.2025`,
-      `> Waktu: ${formatNowJakarta()}`
+      'Halo kak, Yeaayyy aku dapat *Premium (${label})*. Ditunggu ya kak, Makasii >.<',
+      '> ${label}.${idx}.${pct}.2025',
+      '> Waktu: ${formatNowJakarta()}'
     ];
     return lines.join('\n');
   }
   function openWhatsAppWith(text){
-    const url = 'https://api.whatsapp.com/send?phone=' + WA_NUMBER_E164 +
-                '&text=' + encodeURIComponent(text);
+    const url = 'https://api.whatsapp.com/send?phone=' + WA_NUMBER_E164 + '&text=' + encodeURIComponent(text);
     window.open(url, '_blank', 'noopener');
   }
 
-  /* ===================== Giveaway Logic ===================== */
+  /* ===================== SPINNER ===================== */
   function pickWeighted(){
     const total = OPTIONS.reduce((a,b)=>a+b.pct,0);
     const r = Math.random()*total;
@@ -470,36 +448,41 @@ body{
       acc += o.pct;
       if(r <= acc) return o.key;
     }
-    return OPTIONS[OPTIONS.length-1].key;
+    // fallback kalau semua 0 (hindari NaN)
+    const nonZero = OPTIONS.filter(o=>o.pct>0);
+    return (nonZero[0]?.key) || OPTIONS[0].key;
   }
   function easeOutCubic(t){ return 1 - Math.pow(1 - t, 3); }
 
   function showClaimPopup(winnerKey){
-    const label = LABELS[winnerKey] || winnerKey;
+    const label = winnerKey;
     const pct   = PCT_MAP[winnerKey] ?? '?';
     const msg   = buildWaMessage(winnerKey);
 
-    document.getElementById('claimText').textContent =
-`Kamu mendapatkan Premium (${label}).
+    claimText.textContent =
+'Kamu mendapatkan Premium (${label}).
 Klik "Claim" untuk menerimanya.
 
 Rangkuman:
-- Pilihan: ${label} (${winnerKey})
-- Waktu: ${formatNowJakarta()}
-!! Jangan lupa di screenshot, no screnshot=hangus !!`;
+  - Pilihan: ${label}
+  - Waktu: ${formatNowJakarta()}
+  [!] JANGAN LUPA SCREENSHOT, NO SCREENSHOT = HANGUS!!';
 
     claimOverlay.style.display = 'flex';
     btnClaim.onclick = () => openWhatsAppWith(msg);
-    btnCloseClaim.onclick = () => { claimOverlay.style.display = 'none'; };
+    btnClose.onclick = () => { claimOverlay.style.display = 'none'; };
     claimOverlay.addEventListener('click', (e)=>{
       if(e.target === claimOverlay) claimOverlay.style.display = 'none';
     }, { once:true });
   }
 
-  async function spinOnce(){
-    // Nyalakan musik juga jika belum (jaga-jaga)
-    startMusicOnce();
+  async function lockForever(winner){
+    await markPlayed(winner);
+    startBtn.disabled = true;
+  }
 
+  function spinOnce(){
+    startMusicOnce();
     startBtn.disabled = true;
     startBtn.textContent = 'Spinning...';
 
@@ -531,8 +514,8 @@ Rangkuman:
         slots.forEach(s=>s.classList.remove('active','winner'));
         const finalEl = slots[targetIndex];
         finalEl.classList.add('winner');
-        startBtn.textContent = ' Selesai ';
-        statusEl.textContent = 'Hasil: ' + (LABELS[winner]||winner);
+        startBtn.textContent = 'Selesai';
+        statusEl.textContent = 'Hasil: ' + winner;
         lockForever(winner);
         showClaimPopup(winner);
       }
@@ -540,50 +523,15 @@ Rangkuman:
     requestAnimationFrame(frame);
   }
 
-  // Locking (multi-store)
-  async function markPlayedAllStores(resultKey){
-    try { localStorage.setItem(STORAGE_KEY, STORAGE_VAL); } catch(e){}
-    try { sessionStorage.setItem(STORAGE_KEY, STORAGE_VAL); } catch(e){}
-    try { setCookie(STORAGE_KEY, STORAGE_VAL, 3650); } catch(e){}
-    try { await idbSet('gwDB','flags', STORAGE_KEY, STORAGE_VAL); } catch(e){}
-    try { await cacheSet('gwCache', STORAGE_KEY, STORAGE_VAL); } catch(e){}
-    try { localStorage.setItem(RESULT_KEY, resultKey); } catch(e){}
-    try { await idbSet('gwDB','flags', RESULT_KEY, resultKey); } catch(e){}
-  }
-  async function lockForever(winner){
-    await markPlayedAllStores(winner);
-    startBtn.disabled = true;
-  }
+  /* ===================== INIT ===================== */
+  document.getElementById('gwStart').addEventListener('click', startMusicOnce, {once:true});
 
   (async function initGame(){
-    // tombol START juga trigger musik
-    document.getElementById('gwStart').addEventListener('click', startMusicOnce, {once:true});
-
-    // Render board sudah dilakukan di atas
-
-    // Cek sudah pernah main?
-    async function alreadyPlayed(){
-      try{ if(localStorage.getItem(STORAGE_KEY)===STORAGE_VAL) return true; }catch(e){}
-      try{ if(sessionStorage.getItem(STORAGE_KEY)===STORAGE_VAL) return true; }catch(e){}
-      try{ if(getCookie(STORAGE_KEY)===STORAGE_VAL) return true; }catch(e){}
-      try{ if(await idbGet('gwDB','flags', STORAGE_KEY)) return true; }catch(e){}
-      try{ if(await cacheHas('gwCache', STORAGE_KEY)) return true; }catch(e){}
-      return false;
-    }
-    async function getSavedResult(){
-      try{
-        let r = localStorage.getItem(RESULT_KEY);
-        if(r) return r;
-        r = await idbGet('gwDB','flags', RESULT_KEY);
-        return r || null;
-      }catch(e){ return null; }
-    }
-
     if(await alreadyPlayed()){
       startBtn.disabled = true;
       startBtn.textContent = 'Sudah mengikuti';
       const r = await getSavedResult();
-      statusEl.textContent = r ? ('Hasil: ' + (LABELS[r]||r)) : 'Sudah mengikuti';
+      statusEl.textContent = r ? ('Hasil: ' + r) : 'Sudah mengikuti';
       if(r){
         const idx = OPTIONS.findIndex(o=>o.key===r);
         if(idx>=0){ slots[idx].classList.add('winner'); }
